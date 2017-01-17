@@ -12,7 +12,7 @@ use Encode qw(encode decode);
 my $db_host = 'localhost';
 my $db_base = 'jfs3';
 my $db_user = 'root';
-my $db_pass = 'GDk4F/so';
+my $db_pass = '';
 
 my $dsn = "dbi:mysql:$db_base:$db_host:3306";
 my $dbh = DBI->connect($dsn,$db_user,$db_pass);
