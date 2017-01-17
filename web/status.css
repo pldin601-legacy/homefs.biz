@@ -1,0 +1,25 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,cyrillic);
+
+html,body,table,h1,h2,input,ul,p {
+	font-family: "Open Sans", sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 9pt;
+}
+
+table.tblStatus {
+	width: 300px;
+	position: relative;
+	margin-top: 10px;
+	margin-left: -150px;
+	left: 50%;
+}
+
+table.tblStatus caption {
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+table.tblStatus td {
+	border-bottom: 1px dotted #dddddd;
+}

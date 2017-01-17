@@ -1,0 +1,36 @@
+<script id="dirListTmpl" type="text/x-jquery-tmpl">
+	<div class="file-item">
+		<div class="file-row icon"><div class="list-icon folder" id="fi${id}"></div></div>
+		<div class="file-row filename"><p class="of"><a class="folder link" href="#go=${id}">${name}</a><span id="fp-${id}" class="dir-path"></span</p></div>
+		<div class="file-row extension">-</div>
+		<div class="file-row filesize">${humanized}</div>
+		<div class="file-row mtime time" time="${modified}">${relative}</div>
+	</div>
+</script>
+<script id="fileListTmpl" type="text/x-jquery-tmpl">
+	<div class="file-item file-${type}" id="file${id}">
+		<div class="file-row icon"><span class="fs-icon icon-common icon-${type}"></span></div>
+		<div class="file-row filename"><p class="of"><a class="file link" href="/download.php?id=${id}">${name}</a><span id="fp-${id}" class="file-path"></span></p></div>
+		<div class="file-row extension"><p class="of">${extension}</p></div>
+		<div class="file-row filesize">${humanized}</div>
+		<div class="file-row mtime time" time="${modified}">${relative}</div>
+	</div>
+</script>
+<script id="fileListAudioTmpl" type="text/x-jquery-tmpl">
+	<div class="file-item file-${type}" id="file${id}">
+		<div class="file-row icon"><div class="list-icon audio" id="ai${id}"></div></div>
+		<div class="file-row filename"><p class="of"><a class="file link" title="${name}" href="/download.php?id=${id}">${name}</a><span id="fp-${id}" class="file-path"></span></p></div>
+		<div class="file-row extension"><p class="of">${extension}</p></div>
+		<div class="file-row filesize">${humanized}</div>
+		<div class="file-row mtime time" time="${modified}">${relative}</div>
+	</div>
+</script>
+<script id="fileItemInputTmpl" type="text/x-jquery-tmpl">
+	<input type="hidden" class="file-item" id="id-${id}" size="${size}" group="${type}" filename="${name}" extension="${extension}" dir="${dir}" path="${path}" scrolly="${scrolly}">
+</script>
+<script id="fileItemInputAudioTmpl" type="text/x-jquery-tmpl">
+	<input type="hidden" class="file-item" id="id-${id}" size="${size}" group="${type}" filename="${name}" extension="${extension}" dir="${dir}" path="${path}" scrolly="${scrolly}" bitrate="${bitrate}" duration="${duration}" artist="${artist}" title="${title}" album="${album}" track="${tracknumber}" date="${date}" albumartist="${albumartist}">
+</script>
+<script id="nextFilesTmpl" type="text/x-jquery-tmpl">
+	<div class="file-next"><p class="of"><a class="next-page" href="#" onclick="${action}"><img src="/images/animate.gif"></a></p></div>
+</script>

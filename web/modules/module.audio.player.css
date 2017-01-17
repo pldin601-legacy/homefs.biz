@@ -1,0 +1,220 @@
+/* 
+	Style for Audio Module
+*/
+
+div.hfs-player-new {
+	border-top: 1px solid #eeeeee;
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 40px;
+	bottom: 0px;
+	left: 0px;
+	background-color: #333333;
+	bottom: -50px;
+	
+	background: -moz-linear-gradient(top, #ffffff, #f4f4f4);
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f4f4f4));
+	background: -o-linear-gradient(#ffffff, #f4f4f4);
+	z-index: 50;
+}
+
+div.hfs-player-new div.hfs-player-row {
+	position: relative;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-controls {
+	width: 120px;
+	padding: 0 4px;
+	font-size: 14pt;
+	text-align: center;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-cover {
+	width: 48px;
+	padding: 0 2px;
+	text-align: center;
+	display: none;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-cover > img {
+	border: 1px solid #eeeeee;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-title {
+	width: 300px;
+	padding: 0 4px;
+	min-width: 100px;
+	line-height: 16px;
+	text-align: left;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-title .tt-title {
+	font-size: 0.9em;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-title .tt-artist {
+	font-size: 0.8em;
+	padding-left: 2px;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-title .tt-time {
+	font-size: 0.7em;
+	padding-left: 2px;
+}
+
+div.player-controls {
+	padding: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	white-space: nowrap;
+}
+
+div.player-controls span.player-title {
+	position: relative;
+	padding-left: 2px;
+	font-size: 1em;
+}
+
+
+div.player-controls span.player-play {
+	font-size: 1.0em;
+}
+
+div.player-controls span.player-prev {
+}
+
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker {
+	border-left: 1px solid #eeeeee;
+	position: relative;
+	cursor: pointer;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView { 
+	position: relative; 
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #canvas {
+	width: 100%;
+	height: 48px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	z-index: 2;
+	opacity: 0;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #cnvbg {
+	z-index: 5;
+	width: 100%;
+	height: 48px;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #cnvbg #loading {
+	position: absolute;
+	width: 100%;
+	z-index: 10;
+	text-align: center;
+	color: #000000;
+	vertical-align: middle;
+	margin-top: 13px;
+	display: none;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #cnvbg #cnvcursor {
+	width: 1px;
+	height: 100%;
+	position: relative;
+	background-color: #FFAA00;
+	left: 0px;
+	top: 0px;
+	z-index: 10;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #cnvbg #time {
+	background-color: rgba(0,0,0,0.5);
+	position: absolute;
+	font-size: 8pt;
+	color: #ffffff;
+	padding: 0px 3px;
+	bottom: 10px;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #cnvbg #timeDuration {
+	background-color: rgba(0,0,0,0.5);
+	position: absolute;
+	font-size: 8pt;
+	color: #ffffff;
+	padding: 0px 3px;
+	bottom: 10px;
+	right: 0;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #modeSwitch {
+	background: transparent;
+	position: absolute;
+	font-size: 6pt;
+	color: #000000;
+	padding: 1px;
+	top: 0px;
+	right: 0px;
+	border: 1px solid #000000;
+	line-height: 6px;
+	z-index: 200;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-seeker div.peakView #modeSwitch:hover {
+	color: #ffffff;
+	background: #000000;
+	border: 1px solid #ffffff;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-right-controls {
+	border-left: 1px solid #eeeeee;
+	width: 8px;
+	text-align: center;
+	font-size: 14pt;
+}
+
+div.hfs-player-new div.hfs-player-row div.hfs-vu-meter {
+	width: 40px;
+	text-align: center;
+}
+
+div.player-control-icon {
+	border: 1px solid #dddddd;
+	-moz-border-radius: 4px; 
+	-webkit-border-radius: 4px; 
+	-khtml-border-radius: 4px; 
+	border-radius: 4px; 
+}
+
+div.player-control-icon:hover {
+	background-color: #eeeeee !important;
+}
+
+div.player-control-icon:not(:last-child) {
+	margin-right: 1px;
+}
+
+@media (max-width: 1000px) {
+	div.hfs-player-new div.hfs-player-row div.hfs-title { width: 200px !important; }
+}
+
+
+@media (max-width: 939px) {
+	div.hfs-player-new div.hfs-player-row div.hfs-title { width: 150px !important; }
+}
+
+@media (max-width: 800px) {
+	div.hfs-player-new div.hfs-player-row div.hfs-title { width: 100px !important; }
+}
+
+@media (max-width: 400px) {
+	div.hfs-player-new div.hfs-player-row div.hfs-seeker { display:none !important; }
+}

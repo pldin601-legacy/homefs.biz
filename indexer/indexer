@@ -1,0 +1,8 @@
+#!/bin/sh
+
+LOCATION='/usr/domains/homefs.biz/indexer'
+
+cd ${LOCATION}
+./jfs_index
+./jfs_gc
+./jfs_flush

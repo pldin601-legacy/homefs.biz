@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/images/open-sans.ttf');
+}
+
+body {
+	background-color: white;
+	text-align: center;
+	color: #666;
+}
+
+body,table,h1,h2,input {
+	font-family: "Open Sans";
+}
+
+body,table,h1,h2 {
+	margin: 0;
+	padding: 0;
+	cursor: default;
+	font-size: 15px;
+	font-weight: normal;
+}
+
+h1 {
+	padding: 40px 0;
+	font-size: 24px;
+}
+
+

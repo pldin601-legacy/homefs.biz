@@ -1,0 +1,100 @@
+div.hfs-filelist {
+	padding: 0px;
+	display: table;
+	table-layout: fixed;
+	white-space: nowrap;
+	width: 100%;
+	background-color: #ffffff;
+}
+
+div.hfs-filelist div.file-item {
+	display: table-row;
+	-opacity: 0.5;
+}
+
+div.hfs-filelist div.file-item div.file-row a,
+div.hfs-filelist div.file-item { color: #333; transition: background-color 0.5s; }
+
+div.hfs-filelist div.file-item div.file-row { padding: 0px 4px; border-bottom: 1px solid #eee; overflow: hidden; vertical-align: middle; }
+div.hfs-filelist div.file-item div.icon { padding: 7px 2px 7px 2px; display: table-cell; width: 32px; text-align: center; font-size: 18pt; }
+div.hfs-filelist div.file-item div.filename { display: table-cell; overflow: show; }
+
+div.hfs-filelist div.file-item div.extension { display: table-cell; text-align: right; width: 45px; color: #888; }
+div.hfs-filelist div.file-item div.filesize { display: table-cell; text-align: right; width: 75px; }
+div.hfs-filelist div.file-item div.mtime { display: table-cell; text-align: right; width: 156px; }
+
+div.hfs-filelist div.playing, div.hfs-filelist div.paused { background-color: #ECEEF4; }
+div.hfs-filelist div.playing div.audio { background-position: -23px -22px !important; }
+
+div.hfs-filelist div.file-item div.filename p.of { 
+	white-space: nowrap;
+	overflow: visible;
+}
+
+div.hfs-filelist div.file-item div.filename p.of a.link {
+	overflow: hidden;
+    text-overflow: ellipsis;
+	display: block;
+}
+
+div.hfs-filelist div.file-item div.filename p.of span.dir-path,
+div.hfs-filelist div.file-item div.filename p.of span.file-path {
+	font-size: 9pt;
+	padding: 0;
+	transition: opacity 0.25s;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	display: block;
+	position: relative;
+	color: #888;
+}
+
+div.hfs-filelist div.file-item div.filename p.of span.dir-path a,
+div.hfs-filelist div.file-item div.filename p.of span.file-path a {
+	opacity: 0.5;
+	color: #35b;
+}
+
+div.hfs-filelist div.file-item div.filename p.of span.file-path a:hover {
+	opacity: 1;
+}
+
+
+div.hfs-filelist div.file-sub {
+	display: table-cell;
+	column-span: all;
+}
+
+div.hfs-filelist div.file-sub a {
+	font-size: 8pt;
+}
+
+div.hfs-filestats { 
+	-moz-border-radius: 0 0 5px 5px; 
+	-webkit-border-radius: 0 0 5px 5px; 
+	-khtml-border-radius: 0 0 5px 5px; 
+	border-radius: 0 0 5px 5px; 
+
+	padding: 18px 8px 18px 8px; 
+	background-color: #ffffff; 
+}
+
+div.hfs-smartloader {
+	width: 100%;
+	background-color: #ffffff;
+}
+
+div.hfs-smartloader div.file-next {
+	padding: 10px 4px;
+	text-align: center;
+}
+
+
+@media (max-width: 639px) {
+	div.hfs-filelist div.file-item div.extension { display: none } 
+}
+
+@media (max-width: 520px) {
+	div.hfs-filelist div.file-item div.file-row { padding-top: 4px; padding-bottom: 4px; }
+	div.hfs-filelist div.file-item div.mtime { display: none } 
+}
