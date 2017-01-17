@@ -1,9 +1,9 @@
 <?php 
 
-require_once("core/application.class.php");
-require_once("core/functions.core.php");
+require_once(__DIR__ . "/core/application.class.php");
+require_once(__DIR__ . "/core/functions.core.php");
 
-ae_detect_ie(); 
+ae_detect_ie();
 
 ?>
 <!DOCTYPE html>
@@ -11,20 +11,20 @@ ae_detect_ie();
 <HEAD>
 <TITLE>Home File Server</TITLE>
 <!-- styles -->
-<?= list_modules_css() ?>
+<?php list_modules_css() ?>
 
 <!-- scripts -->
-<?= list_modules_js() ?>
+<?php list_modules_js() ?>
 
 <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <LINK rel="icon" type="image/png" href="/images/server.png">
 <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <!-- js patterns -->
-<?= list_templates() ?>
+<?php list_templates() ?>
 
 </HEAD>
 <body>
-	<?= list_html() ?>
+	<?php list_html() ?>
 	<div class="hfs-hlist-wrap">
 		<div class="hfs-header hfs-fixed-width">
 			<ul class="head-list">

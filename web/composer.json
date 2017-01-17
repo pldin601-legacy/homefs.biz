@@ -1,0 +1,15 @@
+{
+  "name": "peacefulbit/homefs",
+  "description": "Web File Server",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Roman Lakhtadyr",
+      "email": "roman.lakhtadyr@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {}
+}

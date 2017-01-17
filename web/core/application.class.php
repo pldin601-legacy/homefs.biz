@@ -1,9 +1,9 @@
 <?php
 
-require_once("config.class.php");
-require_once("database.class.php");
-require_once("filesystem.class.php");
-require_once("account.class.php");
+require_once(__DIR__ . "/config.class.php");
+require_once(__DIR__ . "/database.class.php");
+require_once(__DIR__ . "/filesystem.class.php");
+require_once(__DIR__ . "/account.class.php");
 
 class homefs {
 	static private $objects = array();

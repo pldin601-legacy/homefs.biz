@@ -1,25 +1,9 @@
-AuthType Basic
-AuthName "restricted area"
-AuthUserFile /usr/domains/homefs.biz/webserver/.htpasswd
-require valid-user
-
 RewriteEngine on
 
 RewriteRule ^listen/(\d+)\.(.+)$		listen.php?id=$1&format=$2 [L]
 RewriteRule ^get/(\d+)\.(.+)$			download.php?id=$1 [L]
 
-php_value session.gc_maxlifetime 2592000
-php_value session.cookie_lifetime 2592000
-
-php_flag display_startup_errors on
-php_flag display_errors on
-php_flag html_errors on
-
 RewriteRule ^get/(\d+)/(.+)$ download.php?id=$1&name=$2 [L]
 RewriteRule ^api$ api.php?%{QUERY_STRING}
 RewriteRule ^status$ status.php?%{QUERY_STRING}
 RewriteRule ^endless$ endless.php
-
-php_flag log_errors on
-
-

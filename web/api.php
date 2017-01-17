@@ -62,13 +62,15 @@ switch (filter_input(INPUT_GET, 'action'))
         $benchmark_start = microtime(true);
 
         /* Special query test */
-        if (preg_match("/^\#\w+\s{0,1}.*/", $query))
-        {
+        if (preg_match("/^\\#\\w+\\s{0,1}.*/", $query)) {
             $splits = explode(' ', substr($query, 1), 2);
-            if (count($splits) == 2)
+            if (count($splits) == 2) {
                 list($param, $value) = $splits;
-            else if (count($splits) == 1)
+            } else if (count($splits) == 1) {
                 $param = $splits[0];
+            } else {
+                $param = null;
+            }
 
             switch ($param)
             {
@@ -101,12 +103,9 @@ switch (filter_input(INPUT_GET, 'action'))
         else
         {
             $query_encoded = $fs->encode_query($query);
-            //$total_files = $fs->search_files_count($query_encoded);
-            //$total_dirs = $fs->search_dirs_count($query_encoded);
             list($total_dirs, $result_dirs) = $fs->search_dirs($query_encoded, $file_start, $file_max);
             list($total_files, $result_files) = $fs->search_files($query_encoded, $file_start - $total_dirs + count($result_dirs), $file_max - count($result_dirs));
         }
-
 
         $benchmark_duration = number_format(microtime(true) - $benchmark_start, 3);
 
@@ -193,7 +192,7 @@ switch (filter_input(INPUT_GET, 'action'))
         print_r($query_encoded);
         break;
     default:
-        echo json_error('Unknown action!');
+        json_error('Unknown action!');
         break;
 }
 
@@ -201,5 +200,3 @@ function json_error($msg)
 {
     die(json_encode(array('error' => $msg)));
 }
-
-?>

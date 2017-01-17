@@ -1,0 +1,6 @@
+/vendor/
+/build/
+/.idea/
+/content/cache/*
+!/content/cache/.gitkeep
+.env

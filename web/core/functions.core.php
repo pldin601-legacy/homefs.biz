@@ -42,7 +42,7 @@ function list_templates() {
 	foreach($src as $path) {
 		$hdl = opendir($path);
 		while($file = readdir($hdl)) {
-			if(preg_match("/\.tmpl$/", $file)) {
+			if(preg_match("/\\.tmpl$/", $file)) {
 				$contents = file_get_contents($path."/".$file);
 				echo "$contents\n";
 			}
@@ -58,7 +58,7 @@ function list_html() {
 	foreach($src as $path) {
 		$hdl = opendir($path);
 		while($file = readdir($hdl)) {
-			if(preg_match("/\.html$/", $file)) {
+			if(preg_match("/\\.html$/", $file)) {
 				$contents = file_get_contents($path."/".$file);
 				echo "$contents\n";
 			}
