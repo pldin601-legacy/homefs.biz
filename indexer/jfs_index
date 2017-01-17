@@ -12,7 +12,7 @@ use Data::Dumper;
 my $db_host = 'localhost';
 my $db_base = 'jfs3';
 my $db_user = 'root';
-my $db_pass = 'GDk4F/so';
+my $db_pass = '';
 
 my $ff_cmd = "/usr/local/bin/ffmpeg";
 
