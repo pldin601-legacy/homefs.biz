@@ -1,0 +1,13 @@
+version: "3.5"
+
+services:
+  indexer:
+    build:
+      context: indexer
+    environment:
+      - MYSQL_HOSTNAME=db
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+    volumes:
+      - ./content:/content:ro
