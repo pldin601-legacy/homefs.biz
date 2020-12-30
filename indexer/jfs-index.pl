@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use strict;
+use warnings;
 use DBI;
 use Digest::MD5 qw(md5_hex);
 use Time::HiRes qw(time);
@@ -252,7 +253,7 @@ sub human_size {
     for($pw=0; $bytes>1024; $pw++) {
         $bytes /= 1024;
     }
-    return sprintf(($pw > 0 ? "%1.1f %s" : "%d %s"), $bytes, @el[$pw]);
+    return sprintf(($pw > 0 ? "%1.1f %s" : "%d %s"), $bytes, $el[$pw]);
 }
 
 sub uwords {

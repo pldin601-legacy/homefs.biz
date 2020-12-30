@@ -1,7 +1,15 @@
 version: "3.5"
 
 services:
+  db:
+    image: library/mysql:5.6
+    environment:
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
   indexer:
+    restart: on-failure
     build:
       context: indexer
     environment:
@@ -11,3 +19,5 @@ services:
       - MYSQL_PASSWORD=homefs
     volumes:
       - ./content:/content:ro
+    depends_on:
+      - db
