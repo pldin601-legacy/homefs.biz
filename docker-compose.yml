@@ -34,6 +34,24 @@ services:
       - ./content:/content:ro
     depends_on:
       - db
+  web:
+    restart: on-failure
+    build:
+      context: web
+    environment:
+      - MYSQL_HOSTNAME=db
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+    volumes:
+      - ./content:/content:ro
+      - web-cache:/cache
+    depends_on:
+      - db
+    ports:
+      - 6001:80
 volumes:
   mysql-data:
+    driver: local
+  web-cache:
     driver: local

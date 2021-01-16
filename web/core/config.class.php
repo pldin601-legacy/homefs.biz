@@ -10,12 +10,11 @@ class conf
             'loc_max_width' => 55,
             'loc_max_name_width' => 55,
             'file_max_width' => 58,
-
             'db' => array(
-                'host' => $_ENV['HOMEFS_DB_HOST'],
-                'login' => $_ENV['HOMEFS_DB_USER'],
-                'password' => $_ENV['HOMEFS_DB_PASSWORD'],
-                'database' => $_ENV['HOMEFS_DB_SCHEME']
+                'host' => $_ENV['MYSQL_HOSTNAME'],
+                'login' => $_ENV['MYSQL_USER'],
+                'password' => $_ENV['MYSQL_PASSWORD'],
+                'database' => $_ENV['MYSQL_DATABASE']
             ),
             'bin' => array(
                 'ffmpeg' => '/usr/local/bin/ffmpeg',
@@ -23,7 +22,7 @@ class conf
             ),
             'dir' => array(
                 'site' => $_SERVER['DOCUMENT_ROOT'],
-                'cache' => $_SERVER['DOCUMENT_ROOT'] . '/../cache',
+                'cache' => '/cache',
                 'modules' => 'modules',
                 'js' => 'js',
                 'css' => 'css',
