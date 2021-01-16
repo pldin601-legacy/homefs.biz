@@ -1,5 +1,0 @@
-#!/bin/sh
-
-REDIS="/usr/local/bin/redis-cli"
-
-$REDIS KEYS "uri_cache:homefs.biz:*" | xargs $REDIS DEL
