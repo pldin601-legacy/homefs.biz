@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use Syntax::Keyword::Try;
 use DBI;
 use Digest::MD5 qw(md5_hex);
 use Time::HiRes qw(time);
@@ -10,7 +11,6 @@ use Encode;
 use FindBin qw($Bin);
 use Data::Dumper;
 
-
 my $db_host = $ENV{'MYSQL_HOSTNAME'};
 my $db_base = $ENV{'MYSQL_DATABASE'};
 my $db_user = $ENV{'MYSQL_USER'};
@@ -18,23 +18,21 @@ my $db_pass = $ENV{'MYSQL_PASSWORD'};
 
 my $ff_cmd = "ffmpeg";
 
-my @target = ( '/content' );
+my @target = ('/content');
 
-my @exclude = ( '.snap' );
+my @exclude = ('.snap');
 my %tof = ();
 
 my @meta_enabled = split(",", lc("669,BMP,DKR,DMF,FAR,FL,FLC,FLI,GIF,ICO,LBM,MDL,MKV,MOD,MOV,MP2,MP3,MTM,NFO,PCX,PIX,S3M,SBK,STM,TGA,ULT,VOB,WAV,XM,APE,AVI,FLAC,JPEG,JPG,M4A,M4V,MP4,PNG,TIF"));
 my @wave_enabled = split(",", lc("MP2,MP3,APE,FLAC,M4A,MP4"));
 
 my $dsn = "dbi:mysql:$db_base:$db_host:3306";
-my $dbh = DBI->connect($dsn,$db_user,$db_pass);
+my $dbh = DBI->connect($dsn, $db_user, $db_pass);
 
 $dbh->do("SET NAMES 'utf8'");
 
 my $start = time();
 my $prev_path = "";
-
-load_tof();
 
 foreach my $path (@target) {
     scan_here($path, undef);
@@ -42,42 +40,27 @@ foreach my $path (@target) {
 
 $dbh->disconnect();
 
-
-
-print "\nDuration: ", (time()-$start), " seconds.\n";
-
-#################
-#   FUNCTIONS   #
-#################
-
-sub load_tof {
-    %tof = ();
-    my $q = $dbh->prepare("SELECT * FROM `extensions` WHERE 1");
-    $q->execute();
-    while(my @arr = $q->fetchrow_array()) {
-        $tof{$arr[0]} = $arr[1];
-    }
-}
+print "\nDuration: ", (time() - $start), " seconds.\n";
 
 sub scan_here {
     my ($path, $parent_id) = @_;
     my $this_id = current_dir_id($path, $parent_id);
 
     my @dirs = (), my @files = ();
-    opendir(DIR,$path);
+    opendir(DIR, $path);
     my @file_sort = readdir(DIR);
     closedir(DIR);
     @file_sort = sort(@file_sort);
-    while(my $file = shift(@file_sort)){
-        next if($file eq "." || $file eq "..");	# skip special files
-        next if(substr($file,0,1) eq ".");		# skip hidden files
-        next if(time - (stat($file))[9] < 30);
-        next if(dir_excluded($file));
-        my $tmp = $path."/".$file;
-        next if(-l $tmp);
-        if(-d $tmp && -x $tmp) {
+    while (my $file = shift(@file_sort)) {
+        next if ($file eq "." || $file eq ".."); # skip special files
+        next if (substr($file, 0, 1) eq ".");    # skip hidden files
+        next if (dir_excluded($file));
+        my $tmp = $path . "/" . $file;
+        next if (-l $tmp);
+        if (-d $tmp && -x $tmp) {
             push(@dirs, $file);
-        } elsif(-f $tmp && -r $tmp) {
+        }
+        elsif (-f $tmp && -r $tmp) {
             push(@files, $file);
         }
     }
@@ -93,38 +76,40 @@ sub scan_here {
 
 sub scan_file {
     my ($directory, $name, $parent_id) = @_;
-    my ($mtime, $fsize) = (stat($name))[9,7];
+    my ($mtime, $fsize) = (stat($name))[9, 7];
 
     my $extension;
-    if(index($name, '.') > -1) {
+    if (index($name, '.') > -1) {
         $extension = lc((split('\.', $name))[-1]);
-    } else {
+    }
+    else {
         $extension = "";
     }
 
     my $q = $dbh->prepare("SELECT `id`,`modified`,`md5` FROM `files` WHERE `name` = ? AND `dir_id` = ?");
     $q->execute($name, $parent_id);
-    if($q->rows == 1) {
+    if ($q->rows == 1) {
         my ($id, $tm, $md5) = $q->fetchrow_array();
-        if($tm != $mtime || $md5 eq '') {
-            my @meta = ffmpeg_get_info($name) if(is_meta_enabled($extension));
+        if ($tm != $mtime || $md5 eq '') {
+            my @meta = ffmpeg_get_info($name) if (is_meta_enabled($extension));
             my $cwd = getcwd;
             my $metaj = join(',', @meta);
             my $md5 = file_md5_hex($name);
             my $tags = lc(get_tags("$cwd,$name,$metaj,$md5"));
             $dbh->do("UPDATE `files` SET `modified` = ?, `size` = ?, `md5` = ?, `tags` = ? WHERE `id` = ?", undef, $mtime, $fsize, $md5, $tags, $id);
             mark_reindexed($parent_id);
-            if(has_defined_elements(@meta)) {
+            if (has_defined_elements(@meta)) {
                 $dbh->do("REPLACE INTO `metadata` (`id`, `artist`, `title`, `duration`, `bitrate`, `width`, `height`, `album`, `genre`, `date`, `album_artist`, `tracknumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", undef, $id, @meta);
             }
-            if(is_wave_enabled($extension)) {
+            if (is_wave_enabled($extension)) {
                 my ($wave, $scale) = ffmpeg_get_wave($name);
                 print "Scale $scale\n";
                 $dbh->do("REPLACE INTO `waveform` (`id`, `data`, `scale`) VALUES (?, ?, ?)", undef, $id, $wave, $scale);
             }
         }
-    } else {
-        my @meta = ffmpeg_get_info($name) if(is_meta_enabled($extension));
+    }
+    else {
+        my @meta = ffmpeg_get_info($name) if (is_meta_enabled($extension));
         my $cwd = getcwd;
         my $metaj = join(',', @meta);
         my $md5 = file_md5_hex($name);
@@ -132,10 +117,10 @@ sub scan_file {
         $dbh->do("INSERT INTO `files` (`name`, `md5`, `extension`, `dir_id`, `modified`, `size`, `tags`, `rnd`) VALUES (?, ?, ?, ?, ?, ?, ?, RAND() * 100000000)", undef, $name, $md5, $extension, $parent_id, $mtime, $fsize, $tags);
         my $fid = $dbh->last_insert_id(undef, undef, "files", "id");
         mark_reindexed($parent_id);
-        if(has_defined_elements(@meta)) {
+        if (has_defined_elements(@meta)) {
             $dbh->do("REPLACE INTO `metadata` (`id`, `artist`, `title`, `duration`, `bitrate`, `width`, `height`, `album`, `genre`, `date`, `album_artist`, `tracknumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", undef, $fid, @meta);
         }
-        if(is_wave_enabled($extension)) {
+        if (is_wave_enabled($extension)) {
             my ($wave, $scale) = ffmpeg_get_wave($name);
             $dbh->do("REPLACE INTO `waveform` (`id`, `data`, `scale`) VALUES (?, ?, ?)", undef, $fid, $wave, $scale);
         }
@@ -147,7 +132,7 @@ sub scan_file {
 sub is_meta_enabled {
     my $ft = lc(shift);
     foreach my $mt (@meta_enabled) {
-        return 1 if($mt eq $ft)
+        return 1 if ($mt eq $ft)
     }
     return 0;
 }
@@ -155,7 +140,7 @@ sub is_meta_enabled {
 sub is_wave_enabled {
     my $ft = lc(shift);
     foreach my $mt (@wave_enabled) {
-        return 1 if($mt eq $ft)
+        return 1 if ($mt eq $ft)
     }
     return 0;
 }
@@ -171,7 +156,7 @@ sub dir_excluded {
     my $mydir = getcwd() . '/' . shift;
     foreach my $path (@exclude) {
         my $q = quotemeta($path);
-        return 1 if($mydir =~ /^$q/);
+        return 1 if ($mydir =~ /^$q/);
     }
     return 0;
 }
@@ -191,15 +176,16 @@ sub current_dir_id {
     my $gid = 0;
     my $q = $dbh->prepare("SELECT `id`, `modified` FROM `dirs` WHERE `name` = ? AND `parent_id` <=> ?");
     $q->execute($path, $parent_id);
-    if($q->rows()) {
+    if ($q->rows()) {
         my ($id, $tm) = $q->fetchrow_array();
-        if($tm != $mtime) {
+        if ($tm != $mtime) {
             print "Modified dir!\n";
             $dbh->do("UPDATE `dirs` SET `modified` = ? WHERE `id` = ?", undef, $mtime, $id);
             mark_reindexed($parent_id);
         }
         $gid = $id;
-    } else {
+    }
+    else {
         my $s_time = time();
         $dbh->do('INSERT INTO `dirs` (`name`, `parent_id`, `modified`) VALUES (?, ?, ?)', undef, $path, $parent_id, $mtime);
         my $updtime = time() - $s_time;
@@ -222,11 +208,12 @@ sub file_md5_hex($$) {
     print "Path: $cwd\n";
     print "Size: ", human_size((stat($file))[7]), "\n";
     my $digest;
-    if(open(FILE, "<", $file)) {
+    if (open(FILE, "<", $file)) {
         binmode(FILE);
         $digest = Digest::MD5->new->addfile(*FILE)->hexdigest;
         close(FILE);
-    } else {
+    }
+    else {
         $digest = "no access";
     }
     print "MD5 : $digest\n";
@@ -238,9 +225,9 @@ sub get_tags($$) {
     my $input = shift;
     my @wd = uwords($input);
     my %tmp = ();
-    @wd = grep {! $tmp{$_}++ } @wd;
+    @wd = grep {!$tmp{$_}++} @wd;
     my @ok = ();
-    for my $i (0..$#wd) {
+    for my $i (0 .. $#wd) {
         push(@ok, $wd[$i]) if (length($wd[$i]) > 2);
     }
     return join(',', @ok);
@@ -250,7 +237,7 @@ sub human_size {
     my $bytes = shift;
     my @el = split(" ", "Bytes KiB MiB GiB TiB");
     my $pw;
-    for($pw=0; $bytes>1024; $pw++) {
+    for ($pw = 0; $bytes > 1024; $pw++) {
         $bytes /= 1024;
     }
     return sprintf(($pw > 0 ? "%1.1f %s" : "%d %s"), $bytes, $el[$pw]);
@@ -262,9 +249,9 @@ sub uwords {
     my @words = split(/[\[\]\{\}\.\,\_\s\+\-\<\>\(\)\~\*\"\/\\\\]+/, $string);
     my @uWords = ();
     foreach my $word (@words) {
-        next if(length($word) < $min_wd_len);
+        next if (length($word) < $min_wd_len);
         my $word_tr = $word;
-        push(@uWords, $word_tr) if(! testVal(@uWords, $word_tr) );
+        push(@uWords, $word_tr) if (!testVal(@uWords, $word_tr));
     }
     return @uWords;
 }
@@ -273,7 +260,7 @@ sub testVal {
     my @arr = shift;
     my $val = shift;
     foreach my $itm (@arr) {
-        return 1 if($val eq $itm);
+        return 1 if ($val eq $itm);
     }
     return 0;
 }
@@ -288,7 +275,7 @@ sub my_exec {
     my $cmd = shift;
     my $buff = "";
     open SHELL, "${cmd}|";
-    while(my $line = <SHELL>) {
+    while (my $line = <SHELL>) {
         $buff .= $line;
     }
     close SHELL;
@@ -300,9 +287,10 @@ sub sub_time2sec {
     my @digs = split(':', $gettime);
     return undef unless defined $gettime;
 
-    if($#digs == 2) {
+    if ($#digs == 2) {
         return abs($digs[0]) * 3600 + abs($digs[1]) * 60 + abs($digs[2]);
-    } else {
+    }
+    else {
         return 0;
     }
 }
@@ -314,16 +302,16 @@ sub ffmpeg_get_info {
     my $in_file_arg = esc_chars($in_file);
     my $results = my_exec("$ff_cmd -i $in_file_arg 2>&1");
 
-    my ($artist) 			= $results 			=~ m/ARTIST\s*\:\s(.*)/ig;
-    my ($tn, $title) 		= $results 			=~ m/(TITLE|NAME)\s*\:\s(.*)/ig;
-    my ($genre) 			= $results 			=~ m/GENRE\s*\:\s(.*)/ig;
-    my ($album) 			= $results 			=~ m/ALBUM\s*\:\s(.*)/ig;
-    my ($albumartist) 		= $results 			=~ m/ALBUM\_ARTIST\s*\:\s(.*)/ig;
-    my ($date)	 			= $results 			=~ m/DATE\s*\:\s(.*)/ig;
-    my ($tracknumber)		= $results 			=~ m/TRACK\s*\:\s(.*)/ig;
+    my ($artist) = $results =~ m/ARTIST\s*\:\s(.*)/ig;
+    my ($tn, $title) = $results =~ m/(TITLE|NAME)\s*\:\s(.*)/ig;
+    my ($genre) = $results =~ m/GENRE\s*\:\s(.*)/ig;
+    my ($album) = $results =~ m/ALBUM\s*\:\s(.*)/ig;
+    my ($albumartist) = $results =~ m/ALBUM\_ARTIST\s*\:\s(.*)/ig;
+    my ($date) = $results =~ m/DATE\s*\:\s(.*)/ig;
+    my ($tracknumber) = $results =~ m/TRACK\s*\:\s(.*)/ig;
 
     my ($duration, $bitrate) = $results =~ m/Duration: (.*?),.*?bitrate: (.*?) kb\/s/;
-    my ($width, $height)	 = $results =~ m/Stream\s.+Video: .*?, .*?, (\d+)x(\d+)/;
+    my ($width, $height) = $results =~ m/Stream\s.+Video: .*?, .*?, (\d+)x(\d+)/;
 
     print "- File Metadata --------------------------------------------\n";
     show_meta_param("Artist", $artist);
@@ -371,13 +359,14 @@ sub ffmpeg_get_wave {
 
     my $rate = int(length($results) / 4096);
 
-    if($rate >= 1) {
+    if ($rate >= 1) {
         print "WAVE: Slicing...\n";
         my @slices = $results =~ /(.{$rate})/g;
         for my $data (@slices) {
             push(@waveoctets, get_maximum($data));
         }
-    } else {
+    }
+    else {
         my @slices = $results =~ /(.{1})/g;
         for my $data (@slices) {
             my $i = abs(ord($data) - 127);
@@ -385,7 +374,7 @@ sub ffmpeg_get_wave {
         }
     }
 
-    printf "WAVE: Generated %s bytes\n", ($#waveoctets+1);
+    printf "WAVE: Generated %s bytes\n", ($#waveoctets + 1);
     my $wave = join('', @waveoctets);
     return ($wave, scale_rate($wave));
 
@@ -395,9 +384,9 @@ sub get_maximum {
     my $string = shift;
     my $max = 0;
     my $length = length($string);
-    for(my $n=1;$n<$length;$n+=2) {
+    for (my $n = 1; $n < $length; $n += 2) {
         my $el = ord(substr($string, $n, 1)) - 127;
-        if($el > $max) {
+        if ($el > $max) {
             $max = $el;
         }
     }
@@ -408,9 +397,9 @@ sub scale_rate {
     my $string = shift;
     my $max = 0;
     my $length = length($string);
-    for(my $n=1;$n<$length;$n++) {
+    for (my $n = 1; $n < $length; $n++) {
         my $el = ord(substr($string, $n, 1));
-        if($el > $max) {
+        if ($el > $max) {
             $max = $el;
         }
     }

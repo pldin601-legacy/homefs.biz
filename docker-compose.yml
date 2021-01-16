@@ -8,6 +8,19 @@ services:
       - MYSQL_USER=homefs
       - MYSQL_PASSWORD=homefs
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - mysql-data:/var/lib/mysql
+  migrate:
+    restart: on-failure
+    build:
+      context: migrate
+    environment:
+      - MYSQL_HOSTNAME=db
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+    depends_on:
+      - db
   indexer:
     restart: on-failure
     build:
@@ -21,3 +34,6 @@ services:
       - ./content:/content:ro
     depends_on:
       - db
+volumes:
+  mysql-data:
+    driver: local
