@@ -260,7 +260,7 @@ sub testVal {
     my @arr = shift;
     my $val = shift;
     foreach my $itm (@arr) {
-        return 1 if ($val eq $itm);
+        return 1 if ($val && $val eq $itm);
     }
     return 0;
 }
