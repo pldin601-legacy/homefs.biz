@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-perl /code/jfs-index.pl
+while true; do perl /code/jfs-index.pl; sleep 5m; done
