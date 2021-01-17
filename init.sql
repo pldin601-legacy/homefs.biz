@@ -1,3 +1,4 @@
+-- todo this file contains rest parts of original database dump, that looks like not used
 
 #
 # CREATE TABLE `config_directories`
