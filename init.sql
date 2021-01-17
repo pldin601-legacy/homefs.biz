@@ -33,15 +33,6 @@
 # ) ENGINE = InnoDB;
 
 
-CREATE TABLE `extensions`
-(
-    `extension` varchar(32)                                                                     NOT NULL,
-    `type`      enum ('image','audio','disk-image','archive','temp','document','video','other') NOT NULL DEFAULT 'other',
-    PRIMARY KEY (`extension`)
-) ENGINE = InnoDB;
-
-
-
 CREATE TABLE `statistics`
 (
     `parameter` varchar(32) NOT NULL,
@@ -97,16 +88,4 @@ DELIMITER ;
 #     `pattern_data` varchar(255) NOT NULL,
 #     PRIMARY KEY (`pattern_id`)
 # ) ENGINE = InnoDB
-#   DEFAULT CHARSET = utf8;
-
-
-# CREATE TABLE `users`
-# (
-#     `uid`  int(11)     NOT NULL AUTO_INCREMENT,
-#     `user` varchar(64) NOT NULL,
-#     `pass` varchar(32) NOT NULL,
-#     PRIMARY KEY (`uid`),
-#     UNIQUE KEY `UN` (`user`)
-# ) ENGINE = InnoDB
-#   AUTO_INCREMENT = 5
 #   DEFAULT CHARSET = utf8;

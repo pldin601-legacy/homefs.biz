@@ -17,8 +17,8 @@ class conf
                 'database' => $_ENV['MYSQL_DATABASE']
             ),
             'bin' => array(
-                'ffmpeg' => '/usr/local/bin/ffmpeg',
-                'mediainfo' => '/usr/local/bin/mediainfo'
+                'ffmpeg' => 'ffmpeg',
+                'mediainfo' => 'mediainfo'
             ),
             'dir' => array(
                 'site' => $_SERVER['DOCUMENT_ROOT'],

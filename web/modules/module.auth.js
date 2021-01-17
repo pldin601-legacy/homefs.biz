@@ -11,20 +11,20 @@ function logout() {
 }
 
 function checkAuth() {
-	$.getJSON('https://' + location.hostname + '/login.php', function(data){
+	$.getJSON(`${window.location.origin}/login.php`, function(data){
 		parseLoginData(data);
 	});
 }
 
 function signIn(login, passw) {
-	$.post('https://' + location.hostname + '/login.php?do=in', {login:login,password:passw}, function(json){
+	$.post(`${window.location.origin}/login.php?do=in`, {login:login,password:passw}, function(json){
 		data = JSON.parse(json);
 		parseLoginData(data);
 	});
 }
 
 function signOut() {
-	$.getJSON('https://' + location.hostname + '/login.php?do=out', function(data){
+	$.getJSON(`${window.location.origin}/login.php?do=out`, function(data){
 		parseLoginData(data);
 	});
 }

@@ -22,9 +22,7 @@ if(isset($_GET['do'])) {
 }
 
 echo json_encode(array(
-	'status' 	=> homefs::app('account')->get_last_status(),
-	'uid'		=> homefs::app('account')->get_loggedin_uid(),
-	'name'		=> homefs::app('account')->get_loggedin_user()
+	'status' 	=> 'SUCCESS', //homefs::app('account')->get_last_status(),
+	'uid'		=> 1, //homefs::app('account')->get_loggedin_uid(),
+	'name'		=> 'Guest', //homefs::app('account')->get_loggedin_user()
 ));
-
-?>

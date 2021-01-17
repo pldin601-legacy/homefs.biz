@@ -2,7 +2,8 @@ function start_player(id) {
 	if(track_list[id] !== undefined) {
 		player_status = 1;
 		track_curr_info = track_list[id];
-		$(".jplayer").jPlayer("setMedia", {  mp3: "/listen.php?format=mp3&id=" + track_curr_info['id'] + "&uid=" + loginUser.uid }).jPlayer("play");
+		console.log(track_curr_info);
+		$(".jplayer").jPlayer("setMedia", { mp3: "/listen.php?format=mp3&id=" + track_curr_info['id'] + "&uid=" + loginUser.uid }).jPlayer("play");
 		$("div.player-play").toggleClass("ctrl-pause", true).toggleClass("ctrl-play", false);
 		set_player_title_new(track_curr_info);
 		animate_scroll();
@@ -12,7 +13,7 @@ function start_player(id) {
 		unloadPeakData();
 		loadPeakData(track_curr_info['id']);
 
-		$.post('http://jabbo.homefs.biz/lastfm.php', { 
+		$.post('/lastfm.php', {
 			nowplaying: 1, 
 			artist: track_curr_info.artist, 
 			song: track_curr_info.title, 

@@ -75,7 +75,7 @@ header($config['listen_formats'][$_GET['format']][0]);
 $filepath_esc = escapeshellarg($filepath);
 $timestart = 0;
 
-do_this("/usr/local/bin/ffmpeg -ss {$timestart} -i {$filepath_esc} -vn -ar 44100 -ac {$inchannels} {$config['listen_formats'][$format][1]} -ab {$inbitrate}k -af volume={$scale} -map_metadata -1 - 2>/dev/null", $projected_size, $throttle, $inbitrate);
+do_this("ffmpeg -ss {$timestart} -i {$filepath_esc} -vn -ar 44100 -ac {$inchannels} {$config['listen_formats'][$format][1]} -ab {$inbitrate}k -af volume={$scale} -map_metadata -1 - 2>/dev/null", $projected_size, $throttle, $inbitrate);
 
 
 function do_this($cmd, $elapsed, $throttle, $inbitrate) {

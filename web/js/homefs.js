@@ -116,6 +116,8 @@ function homefs_url_continue(id, start) {
 		$("div.hfs-smartloader").html('');
 
 
+		console.log(data)
+
 		if(data.error !== undefined) {
 			$("div.hfs-information span").html(data.error);
 			return false;

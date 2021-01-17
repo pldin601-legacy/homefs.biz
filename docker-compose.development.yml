@@ -1,0 +1,60 @@
+version: "3.5"
+
+services:
+  db:
+    image: library/mysql:5.6
+    environment:
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - mysql-data:/var/lib/mysql
+  migrate:
+    restart: on-failure
+    build:
+      context: migrate
+    environment:
+      - MYSQL_HOSTNAME=db
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+    depends_on:
+      - db
+    volumes:
+      - ./migrate/migrations:/migrations
+  indexer:
+    restart: on-failure
+    build:
+      context: indexer
+    environment:
+      - MYSQL_HOSTNAME=db
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+    volumes:
+      - ./content:/content:ro
+    depends_on:
+      - db
+  web:
+    restart: on-failure
+    build:
+      context: web
+    environment:
+      - MYSQL_HOSTNAME=db
+      - MYSQL_DATABASE=homefs
+      - MYSQL_USER=homefs
+      - MYSQL_PASSWORD=homefs
+    volumes:
+      - ./content:/content:ro
+      - web-cache:/cache
+      - ./web:/var/www/html
+    depends_on:
+      - db
+    ports:
+      - 6001:80
+volumes:
+  mysql-data:
+    driver: local
+  web-cache:
+    driver: local
